@@ -5,7 +5,6 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-echo -e "\n"
 PS3="What would you like to convert your file(s) to? "
 options=("Video" "Audio" "Image" "Exit")
 
@@ -34,4 +33,10 @@ select choice in "${options[@]}"; do
     esac
 done
 
-echo $conversion_type
+if [ -d "$1" ]; then
+    echo "dir"
+elif [ -f "$1" ]; then
+    echo "file"
+else
+    echo "error"
+fi
