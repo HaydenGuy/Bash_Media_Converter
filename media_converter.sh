@@ -5,7 +5,6 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-
 if [ -d "$1" ]; then
     arg_1="dir"
 elif [ -f "$1" ]; then
@@ -173,4 +172,35 @@ else
                 ;;
         esac
     done
+fi
+
+file_name=""
+while [ -z "$file_name" ]; do
+    read -p "What should your file(s) be called? " file_name
+done
+
+output_dir=""
+while [ -z "$output_dir" ]; do
+    read -ep "Where should your file(s) be saved? (cwd for current directory) " output_dir
+done
+
+if [ "$output_dir" == "cwd" ]; then
+    output_dir="$(pwd)"
+fi
+
+if [ -d "$output_dir" ]; then
+    if [ "$arg_1" == "file" ] && [ "$conversion_type" == "image" ]; then
+            ffmpeg -i "$1" "$output_dir/$file_name.$format"
+    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "image" ]; then
+        count=1
+        for file in "$1"/*; do
+            if [ -f "$file" ]; then
+                ffmpeg -i "$file" "$output_dir/$file_name$count.$format"
+                count=$((count+1))
+            fi
+        done
+    fi
+else
+    echo "Invalid output directory"
+    exit 1
 fi
