@@ -1,7 +1,17 @@
 #!/bin/bash
 
 if [ $# -ne 1 ]; then
-    echo "Usage: $(basename "$0") <file/dir to convert>"
+    echo "Usage: $(basename "$0") <file or dir to convert>"
+    exit 1
+fi
+
+
+if [ -d "$1" ]; then
+    arg_1="dir"
+elif [ -f "$1" ]; then
+    arg_1="file"
+else
+    echo "Error reading file"
     exit 1
 fi
 
@@ -37,139 +47,130 @@ PS3="What format do you want to convert to? "
 
 if [ "$conversion_type" == "video" ]; then
     video_formats=("mp4" "avi" "mkv" "mov" "wmv" "flv" "webm" "3gp" "mpg")
-    
+
     select choice in "${video_formats[@]}"; do
         case "$choice" in
             "mp4")
-                echo "You selected MP4 format."
-                # Add code to handle MP4 format here
+                format="mp4"
+                break
                 ;;
             "avi")
-                echo "You selected AVI format."
-                # Add code to handle AVI format here
+                format="avi"
+                break
                 ;;
             "mkv")
-                echo "You selected MKV format."
-                # Add code to handle MKV format here
+                format="mkv"
+                break
                 ;;
             "mov")
-                echo "You selected MOV format."
-                # Add code to handle MOV format here
+                format="mov"
+                break
                 ;;
             "wmv")
-                echo "You selected WMV format."
-                # Add code to handle WMV format here
+                format="wmv"
+                break
                 ;;
             "flv")
-                echo "You selected FLV format."
-                # Add code to handle FLV format here
+                format="flv"
+                break
                 ;;
             "webm")
-                echo "You selected WebM format."
-                # Add code to handle WebM format here
+                format="webm"
+                break
                 ;;
             "3gp")
-                echo "You selected 3GP format."
-                # Add code to handle 3GP format here
+                format="3gp"
+                break
                 ;;
             "mpg")
-                echo "You selected MPG format."
-                # Add code to handle MPG format here
+                format="mpg"
+                break
                 ;;
             *)
                 echo "Invalid option. Please select a valid video format."
                 ;;
         esac
     done
-            
+
 elif [ "$conversion_type" == "audio" ]; then
     audio_formats=("mp3" "wav" "aac" "flac" "ogg" "wma" "m4a" "opus")
-    
+
     select choice in "${audio_formats[@]}"; do
         case "$choice" in
             "mp3")
-                echo "You selected MP3 format."
-                # Add code to handle MP3 format here
+                format="mp3"
+                break
                 ;;
             "wav")
-                echo "You selected WAV format."
-                # Add code to handle WAV format here
+                format="wav"
+                break
                 ;;
             "aac")
-                echo "You selected AAC format."
-                # Add code to handle AAC format here
+                format="aac"
+                break
                 ;;
             "flac")
-                echo "You selected FLAC format."
-                # Add code to handle FLAC format here
+                format="flac"
+                break
                 ;;
             "ogg")
-                echo "You selected OGG format."
-                # Add code to handle OGG format here
+                format="ogg"
+                break
                 ;;
             "wma")
-                echo "You selected WMA format."
-                # Add code to handle WMA format here
+                format="wma"
+                break
                 ;;
             "m4a")
-                echo "You selected M4A format."
-                # Add code to handle M4A format here
+                format="m4a"
+                break
                 ;;
             "opus")
-                echo "You selected Opus format."
-                # Add code to handle Opus format here
+                format="opus"
+                break
                 ;;
             *)
                 echo "Invalid option. Please select a valid audio format."
                 ;;
         esac
     done
+
 else
     image_formats=("jpg" "jpeg" "png" "gif" "bmp" "tiff" "svg")
 
     select choice in "${image_formats[@]}"; do
         case "$choice" in
             "jpg")
-                echo "You selected JPG format."
-                # Add code to handle JPG format here
+                format="jpg"
+                break
                 ;;
             "jpeg")
-                echo "You selected JPEG format."
-                # Add code to handle JPEG format here
+                format="jpeg"
+                break
                 ;;
             "png")
-                echo "You selected PNG format."
-                # Add code to handle PNG format here
+                format="png"
+                break
                 ;;
             "gif")
-                echo "You selected GIF format."
-                # Add code to handle GIF format here
+                format="gif"
+                break
                 ;;
             "bmp")
-                echo "You selected BMP format."
-                # Add code to handle BMP format here
+                format="bmp"
+                break
                 ;;
             "tiff")
-                echo "You selected TIFF format."
-                # Add code to handle TIFF format here
+                format="tiff"
+                break
                 ;;
             "svg")
-                echo "You selected SVG format."
-                # Add code to handle SVG format here
+                format="svg"
+                break
                 ;;
             *)
                 echo "Invalid option. Please select a valid image format."
                 ;;
         esac
     done
-fi
-
-
-if [ -d "$1" ]; then
-    echo "dir"
-elif [ -f "$1" ]; then
-    echo "file"
-else
-    echo "error reading file"
-    exit 1
 fi
