@@ -200,11 +200,11 @@ if [ -d "$output_dir" ]; then
             fi
         done
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
-        break
+        break #need to initialise the codec in the case statements for each video
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "video" ]; then
         break
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
-        break
+        break #need to initialise the codec in the case statements for each audio
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
         break
     fi
