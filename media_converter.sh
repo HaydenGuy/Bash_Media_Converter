@@ -182,7 +182,7 @@ done
 output_dir=""
 while [ -z "$output_dir" ]; do
     read -ep "Where should your file(s) be saved? (cwd for current directory) " output_dir
-done
+done                      
 
 if [ "$output_dir" == "cwd" ]; then
     output_dir="$(pwd)"
@@ -199,6 +199,14 @@ if [ -d "$output_dir" ]; then
                 count=$((count+1))
             fi
         done
+    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
+        break
+    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "video" ]; then
+        break
+    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
+        break
+    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
+        break
     fi
 else
     echo "Invalid output directory"
