@@ -194,7 +194,7 @@ if [ -d "$output_dir" ]; then
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "image" ]; then
         count=1
         for file in "$1"/*; do
-            if [ -f "$file" ]; then
+            if [ -f "$file" ] && [ "$file" != "$0" ]; then
                 ffmpeg -i "$file" "$output_dir/$file_name$count.$format"
                 count=$((count+1))
             fi
