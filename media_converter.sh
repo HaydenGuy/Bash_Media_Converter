@@ -195,6 +195,7 @@ fi
 if [ -d "$output_dir" ]; then
     if [ "$arg_1" == "file" ] && [ "$conversion_type" == "image" ]; then
             ffmpeg -i "$1" "$output_dir/$file_name.$format"
+
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "image" ]; then
         count=1
         for file in "$1"/*; do
@@ -203,12 +204,21 @@ if [ -d "$output_dir" ]; then
                 count=$((count+1))
             fi
         done
+
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
-        ffmpeg -i "$1" -c:v "$codec" "$file_name.$format"
+        ffmpeg -i "$1" -c:v "$codec" "$output_dir/$file_name.$format"
+
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "video" ]; then
-        break
+        count=1
+        for file in "$1"/*; do
+            if [ -f "$file" ] && [ "$file" != "$0" ]; then
+                ffmpeg -i "$file" -c:v "$codec" "$output_dir/$file_name$count.$format"
+                count=$((count+1))
+            fi
+        done
+
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
-        break #need to initialise the codec in the case statements for each audio
+        break 
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
         break
     fi
