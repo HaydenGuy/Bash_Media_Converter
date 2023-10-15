@@ -96,40 +96,43 @@ if [ "$conversion_type" == "video" ]; then
     done
 
 elif [ "$conversion_type" == "audio" ]; then
-    audio_formats=("mp3" "wav" "aac" "flac" "ogg" "wma" "m4a" "opus")
+    audio_formats=("mp3" "wav" "aac" "flac" "ogg" "wma" "opus")
 
     select choice in "${audio_formats[@]}"; do
         case "$choice" in
             "mp3")
                 format="mp3"
+                codec="libmp3lame"
                 break
                 ;;
             "wav")
                 format="wav"
+                codec="pcm_s16le"
                 break
                 ;;
             "aac")
                 format="aac"
+                codec="aac"
                 break
                 ;;
             "flac")
                 format="flac"
+                codec="flac"
                 break
                 ;;
             "ogg")
                 format="ogg"
+                codec="libvorbis"
                 break
                 ;;
             "wma")
                 format="wma"
-                break
-                ;;
-            "m4a")
-                format="m4a"
+                codec="wmav2"
                 break
                 ;;
             "opus")
                 format="opus"
+                codec="libopus"
                 break
                 ;;
             *)
@@ -201,8 +204,8 @@ if [ -d "$output_dir" ]; then
             fi
         done
 
-    # elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
-    #     break 
+    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
+        ffmpeg -i "$1" -c:a "$codec" "$output_dir/$file_name.$format"
 
     # elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
     #     break
