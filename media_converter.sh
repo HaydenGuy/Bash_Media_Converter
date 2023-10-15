@@ -45,44 +45,48 @@ done
 PS3="What format do you want to convert to? "
 
 if [ "$conversion_type" == "video" ]; then
-    video_formats=("mp4" "avi" "mkv" "mov" "wmv" "flv" "webm" "3gp" "mpg")
+    video_formats=("mp4" "avi" "mkv" "mov" "wmv" "flv" "webm" "mpg")
 
     select choice in "${video_formats[@]}"; do
         case "$choice" in
             "mp4")
                 format="mp4"
+                codec="libx264"
                 break
                 ;;
             "avi")
                 format="avi"
+                codec="libx264"
                 break
                 ;;
             "mkv")
                 format="mkv"
+                codec="libx264"
                 break
                 ;;
             "mov")
                 format="mov"
+                codec="libx264"
                 break
                 ;;
             "wmv")
                 format="wmv"
+                codec="wmv2"
                 break
                 ;;
             "flv")
                 format="flv"
+                codec="flv"
                 break
                 ;;
             "webm")
                 format="webm"
-                break
-                ;;
-            "3gp")
-                format="3gp"
+                codec="libvpx"
                 break
                 ;;
             "mpg")
                 format="mpg"
+                codec="mpeg2video"
                 break
                 ;;
             *)
@@ -200,7 +204,7 @@ if [ -d "$output_dir" ]; then
             fi
         done
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
-        break #need to initialise the codec in the case statements for each video
+        ffmpeg -i "$1" -c:v "$codec" "$file_name.$format"
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "video" ]; then
         break
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
