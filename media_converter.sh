@@ -207,8 +207,14 @@ if [ -d "$output_dir" ]; then
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
         ffmpeg -i "$1" -c:a "$codec" "$output_dir/$file_name.$format"
 
-    # elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
-    #     break
+    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
+        count=1
+        for file in "$1"/*; do
+            if [ -f "$file" ] && [ "$file" != "$0" ]; then
+                ffmpeg -i "$file" -c:a "$codec" "$output_dir/$file_name$count.$format"
+                count=$((count+1))
+            fi
+        done
 
     elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "image" ]; then
         ffmpeg -i "$1" "$output_dir/$file_name.$format"
