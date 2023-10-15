@@ -139,7 +139,7 @@ elif [ "$conversion_type" == "audio" ]; then
     done
 
 else
-    image_formats=("jpg" "jpeg" "png" "gif" "bmp" "tiff" "svg")
+    image_formats=("jpg" "jpeg" "png" "gif" "bmp" "tiff")
 
     select choice in "${image_formats[@]}"; do
         case "$choice" in
@@ -167,10 +167,6 @@ else
                 format="tiff"
                 break
                 ;;
-            "svg")
-                format="svg"
-                break
-                ;;
             *)
                 echo "Invalid option. Please select a valid image format."
                 ;;
@@ -193,19 +189,7 @@ if [ "$output_dir" == "cwd" ]; then
 fi
 
 if [ -d "$output_dir" ]; then
-    if [ "$arg_1" == "file" ] && [ "$conversion_type" == "image" ]; then
-            ffmpeg -i "$1" "$output_dir/$file_name.$format"
-
-    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "image" ]; then
-        count=1
-        for file in "$1"/*; do
-            if [ -f "$file" ] && [ "$file" != "$0" ]; then
-                ffmpeg -i "$file" "$output_dir/$file_name$count.$format"
-                count=$((count+1))
-            fi
-        done
-
-    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
+    if [ "$arg_1" == "file" ] && [ "$conversion_type" == "video" ]; then
         ffmpeg -i "$1" -c:v "$codec" "$output_dir/$file_name.$format"
 
     elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "video" ]; then
@@ -217,11 +201,25 @@ if [ -d "$output_dir" ]; then
             fi
         done
 
-    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
-        break 
-    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
-        break
+    # elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "audio" ]; then
+    #     break 
+
+    # elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "audio" ]; then
+    #     break
+
+    elif [ "$arg_1" == "file" ] && [ "$conversion_type" == "image" ]; then
+        ffmpeg -i "$1" "$output_dir/$file_name.$format"
+
+    elif [ "$arg_1" == "dir" ] && [ "$conversion_type" == "image" ]; then
+        count=1
+        for file in "$1"/*; do
+            if [ -f "$file" ] && [ "$file" != "$0" ]; then
+                ffmpeg -i "$file" "$output_dir/$file_name$count.$format"
+                count=$((count+1))
+            fi
+        done
     fi
+
 else
     echo "Invalid output directory"
     exit 1
